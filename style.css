@@ -1,0 +1,60 @@
+:root{
+  --bg1:#eef7ec; --panel:#fffdf8; --accent:#2f6f3e; --accent2:#c16214; --text:#213422;
+}
+*{box-sizing:border-box}
+body{
+  font-family: "Quicksand", sans-serif;
+  background: linear-gradient(180deg,var(--bg1),#fbf7ef);
+  margin:0;color:var(--text);
+}
+
+/* splash */
+.splash{
+  position:fixed;inset:0;background:linear-gradient(180deg,#f9f8f3,#eef7ec);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;
+}
+.splash-logo{width:140px}
+.splash-text{margin-top:12px;font-size:1.05rem;color:#4b5a3b}
+
+/* header */
+.top{display:flex;align-items:center;gap:12px;padding:12px 16px;background:transparent;justify-content:space-between}
+.logo{width:56px;height:56px;object-fit:contain}
+.title-wrap{flex:1;text-align:center}
+h1{margin:0;font-size:1.4rem;color:#26432b}
+.subtitle{margin:4px 0 0;font-size:0.9rem;color:#556b4a}
+.lang select{padding:6px;border-radius:8px}
+
+/* layout */
+.main{display:flex;flex-direction:row;gap:16px;padding:16px;max-width:1100px;margin:0 auto}
+.panel{background:var(--panel);padding:14px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+.filters{width:320px;min-width:260px}
+.results{flex:1}
+
+/* controls */
+label{display:block;margin:8px 0;font-weight:600;color:var(--text)}
+select{width:100%;padding:8px;border-radius:8px;border:1px solid #dcd7c7;background:#fff}
+.btn{width:100%;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700;margin-top:8px;cursor:pointer}
+.btn:hover{opacity:0.95}
+
+/* loader */
+.loader{display:flex;align-items:center;gap:12px;margin-top:12px}
+.loader.hidden{display:none}
+.loader-img{width:44px;animation:spin 1.2s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* results grid */
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:8px}
+.card{display:flex;gap:10px;align-items:center;padding:8px;background:#fff;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+.thumb{width:80px;height:64px;border-radius:8px;object-fit:cover;background:#eee}
+.card h3{margin:0;font-size:1rem}
+.card p{margin:2px 0 0;font-size:0.85rem;color:#5b6b55}
+
+/* footer */
+.foot{text-align:center;padding:16px;color:#7a7a7a}
+
+/* responsive */
+@media(max-width:900px){
+  .main{flex-direction:column;padding:12px}
+  .filters{width:auto}
+  .list{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .splash-logo{width:90px}
+}

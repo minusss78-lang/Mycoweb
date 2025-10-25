@@ -1,57 +1,19 @@
 [
-  {
-    "name_it": "Amanita muscaria",
-    "name_en": "Fly agaric",
-    "name_la": "Amanita muscaria",
-    "color": "rosso",
-    "shape": "convesso",
-    "gills": "lamelle",
-    "ring": "presente",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Amanita_muscaria_3_vliegenzwammen_op_rij.jpg",
-    "link": "https://www.mushroomexpert.com/amanita_muscaria.html"
-  },
-  {
-    "name_it": "Boletus edulis",
-    "name_en": "Porcini",
-    "name_la": "Boletus edulis",
-    "color": "marrone",
-    "shape": "convesso",
-    "gills": "pori",
-    "ring": "assente",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Boletus_edulis_EtgHollande_081031_1.jpg",
-    "link": "https://www.mushroomexpert.com/boletus_edulis.html"
-  },
-  {
-    "name_it": "Cantharellus cibarius",
-    "name_en": "Chanterelle",
-    "name_la": "Cantharellus cibarius",
-    "color": "giallo",
-    "shape": "imbutiforme",
-    "gills": "pliche",
-    "ring": "assente",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cantharellus_cibarius_01.JPG",
-    "link": "https://www.mushroomexpert.com/cantharellus_cibarius.html"
-  },
-  {
-    "name_it": "Russula emetica",
-    "name_en": "The Sickener",
-    "name_la": "Russula emetica",
-    "color": "rosso",
-    "shape": "convesso",
-    "gills": "lamelle",
-    "ring": "assente",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Russula_emetica_02.jpg",
-    "link": "https://www.mushroomexpert.com/russula_emetica.html"
-  },
-  {
-    "name_it": "Hydnum repandum",
-    "name_en": "Wood hedgehog",
-    "name_la": "Hydnum repandum",
-    "color": "ocra",
-    "shape": "convesso",
-    "gills": "aculei",
-    "ring": "assente",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/2/22/Hydnum_repadum.jpg",
-    "link": "https://www.mushroomexpert.com/hydnum_repadum.html"
-  }
+  {"nome_italiano":"Amanita muscaria","nome_inglese":"Fly agaric","nome_latino":"Amanita muscaria","immagine":"https://upload.wikimedia.org/wikipedia/commons/e/e6/Amanita_muscaria_3_vliegenzwammen_op_rij.jpg","caratteri":{"colore_cappello":"rosso","forma_cappello":"convesso","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"bianche","forma_gambo":"cilindrico","anello":"presente","volva":"parziale","odore":"inodore","habitat":"bosco di conifere","altitudine":"media","stagione":"autunno"}},
+  {"nome_italiano":"Boletus edulis","nome_inglese":"King bolete","nome_latino":"Boletus edulis","immagine":"https://upload.wikimedia.org/wikipedia/commons/b/bb/Boletus_edulis_EtgHollande_2012_207.jpg","caratteri":{"colore_cappello":"marrone","forma_cappello":"convesso","imenoforo":"pori","forma_lamelle":"n/a","colore_lamelle":"bianco","forma_gambo":"bulboso","anello":"assente","volva":"assente","odore":"gradevole","habitat":"bosco misto","altitudine":"media","stagione":"estate-autunno"}},
+  {"nome_italiano":"Cantharellus cibarius","nome_inglese":"Chanterelle","nome_latino":"Cantharellus cibarius","immagine":"https://upload.wikimedia.org/wikipedia/commons/3/3a/Cantharellus_cibarius_01.JPG","caratteri":{"colore_cappello":"giallo","forma_cappello":"imbutiforme","imenoforo":"pliche","forma_lamelle":"decorrenti","colore_lamelle":"gialle","forma_gambo":"affusolato","anello":"assente","volva":"assente","odore":"fruttato","habitat":"bosco di latifoglie","altitudine":"bassa","stagione":"estate"}},
+  {"nome_italiano":"Russula emetica","nome_inglese":"The Sickener","nome_latino":"Russula emetica","immagine":"https://upload.wikimedia.org/wikipedia/commons/3/33/Russula_emetica_02.jpg","caratteri":{"colore_cappello":"rosso","forma_cappello":"convesso","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"bianche","forma_gambo":"cilindrico","anello":"assente","volva":"assente","odore":"pepato","habitat":"bosco di conifere","altitudine":"bassa","stagione":"estate"}},
+  {"nome_italiano":"Lactarius deliciosus","nome_inglese":"Saffron milk cap","nome_latino":"Lactarius deliciosus","immagine":"https://upload.wikimedia.org/wikipedia/commons/b/bb/Lactarius_deliciosus_1.jpg","caratteri":{"colore_cappello":"arancio","forma_cappello":"convesso","imenoforo":"lamelle","forma_lamelle":"decorrenti","colore_lamelle":"arancioni","forma_gambo":"cilindrico","anello":"assente","volva":"assente","odore":"latte-arancio","habitat":"bosco di conifere","altitudine":"media","stagione":"autunno"}},
+  {"nome_italiano":"Hydnum repandum","nome_inglese":"Wood hedgehog","nome_latino":"Hydnum repandum","immagine":"https://upload.wikimedia.org/wikipedia/commons/2/22/Hydnum_repadum.jpg","caratteri":{"colore_cappello":"ocra","forma_cappello":"convesso","imenoforo":"aculei","forma_lamelle":"n/a","colore_lamelle":"ocra","forma_gambo":"corto","anello":"assente","volva":"assente","odore":"fungino","habitat":"bosco di latifoglie","altitudine":"bassa","stagione":"autunno"}},
+  {"nome_italiano":"Pleurotus ostreatus","nome_inglese":"Oyster mushroom","nome_latino":"Pleurotus ostreatus","immagine":"https://upload.wikimedia.org/wikipedia/commons/b/bd/Pleurotus_ostreatus_JPG1.jpg","caratteri":{"colore_cappello":"grigio","forma_cappello":"a ventaglio","imenoforo":"lamelle","forma_lamelle":"decorrenti","colore_lamelle":"bianche","forma_gambo":"corto","anello":"assente","volva":"assente","odore":"legnoso","habitat":"ceppaia","altitudine":"bassa","stagione":"inverno"}},
+  {"nome_italiano":"Trametes versicolor","nome_inglese":"Turkey tail","nome_latino":"Trametes versicolor","immagine":"https://upload.wikimedia.org/wikipedia/commons/f/f5/Trametes_versicolor_G5_%28cropped%29.jpg","caratteri":{"colore_cappello":"multicolore","forma_cappello":"a ventaglio","imenoforo":"pori","forma_lamelle":"n/a","colore_lamelle":"n/a","forma_gambo":"n/a","anello":"assente","volva":"assente","odore":"legnoso","habitat":"ceppaia","altitudine":"bassa","stagione":"tutto l'anno"}},
+  {"nome_italiano":"Hericium erinaceus","nome_inglese":"Lion's mane","nome_latino":"Hericium erinaceus","immagine":"https://upload.wikimedia.org/wikipedia/commons/0/0a/Hericium_erinaceus_I.jpg","caratteri":{"colore_cappello":"bianco","forma_cappello":"globoso","imenoforo":"aculei pendenti","forma_lamelle":"n/a","colore_lamelle":"n/a","forma_gambo":"n/a","anello":"assente","volva":"assente","odore":"dolce","habitat":"ceppaia di latifoglie","altitudine":"bassa","stagione":"autunno"}},
+  {"nome_italiano":"Coprinus comatus","nome_inglese":"Shaggy inkcap","nome_latino":"Coprinus comatus","immagine":"https://upload.wikimedia.org/wikipedia/commons/5/50/Coprinus_comatus_g2.jpg","caratteri":{"colore_cappello":"bianco","forma_cappello":"campanulato","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"bianche","forma_gambo":"cilindrico","anello":"presente","volva":"assente","odore":"gradevole","habitat":"prato","altitudine":"bassa","stagione":"primavera"}},
+  {"nome_italiano":"Agaricus bisporus","nome_inglese":"Button mushroom","nome_latino":"Agaricus bisporus","immagine":"https://upload.wikimedia.org/wikipedia/commons/7/7b/Agaricus_bisporus.jpg","caratteri":{"colore_cappello":"bianco","forma_cappello":"convesso","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"rosa","forma_gambo":"cilindrico","anello":"presente","volva":"assente","odore":"fungino","habitat":"prato","altitudine":"bassa","stagione":"estate"}},
+  {"nome_italiano":"Leccinum scabrum","nome_inglese":"Brown birch bolete","nome_latino":"Leccinum scabrum","immagine":"https://upload.wikimedia.org/wikipedia/commons/a/a8/Leccinum_scabrum_04.jpg","caratteri":{"colore_cappello":"marrone","forma_cappello":"convesso","imenoforo":"pori","forma_lamelle":"n/a","colore_lamelle":"bianco","forma_gambo":"cilindrico","anello":"assente","volva":"assente","odore":"dolce","habitat":"bosco di latifoglie","altitudine":"bassa","stagione":"estate-autunno"}},
+  {"nome_italiano":"Suillus luteus","nome_inglese":"Slippery Jack","nome_latino":"Suillus luteus","immagine":"https://upload.wikimedia.org/wikipedia/commons/8/8e/Suillus_luteus_2002.jpg","caratteri":{"colore_cappello":"marrone","forma_cappello":"convesso","imenoforo":"pori","forma_lamelle":"n/a","colore_lamelle":"gialle","forma_gambo":"cilindrico","anello":"assente","volva":"assente","odore":"mild","habitat":"bosco di conifere","altitudine":"bassa","stagione":"estate-autunno"}},
+  {"nome_italiano":"Flammulina velutipes","nome_inglese":"Enoki","nome_latino":"Flammulina velutipes","immagine":"https://upload.wikimedia.org/wikipedia/commons/6/69/Flammulina_velutipes.jpg","caratteri":{"colore_cappello":"giallo","forma_cappello":"campanulato","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"bianche","forma_gambo":"allungato","anello":"assente","volva":"assente","odore":"debole","habitat":"su tronchi","altitudine":"bassa","stagione":"autunno-inverno"}},
+  {"nome_italiano":"Tricholoma matsutake","nome_inglese":"Matsutake","nome_latino":"Tricholoma matsutake","immagine":"https://upload.wikimedia.org/wikipedia/commons/9/9b/Tricholoma_matsutake_02.jpg","caratteri":{"colore_cappello":"marrone scuro","forma_cappello":"convesso","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"bianche","forma_gambo":"grosso","anello":"presente","volva":"assente","odore":"resinoso","habitat":"bosco di conifere","altitudine":"alta","stagione":"autunno"}},
+  {"nome_italiano":"Boletus satanas","nome_inglese":"Satan's bolete","nome_latino":"Boletus satanas","immagine":"https://upload.wikimedia.org/wikipedia/commons/2/22/Boletus_satanas_02.jpg","caratteri":{"colore_cappello":"grigio","forma_cappello":"convesso","imenoforo":"pori","forma_lamelle":"n/a","colore_lamelle":"gialle","forma_gambo":"grosso","anello":"assente","volva":"assente","odore":"sgradevole","habitat":"bosco di latifoglie","altitudine":"bassa","stagione":"estate"}},
+  {"nome_italiano":"Russula virescens","nome_inglese":"Green-cracking Russula","nome_latino":"Russula virescens","immagine":"https://upload.wikimedia.org/wikipedia/commons/f/f2/Russula_virescens.JPG","caratteri":{"colore_cappello":"verde","forma_cappello":"convesso","imenoforo":"lamelle","forma_lamelle":"libere","colore_lamelle":"bianche","forma_gambo":"cilindrico","anello":"assente","volva":"assente","odore":"dolce","habitat":"bosco di latifoglie","altitudine":"bassa","stagione":"estate"}}
 ]

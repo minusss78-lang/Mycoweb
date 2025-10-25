@@ -1,69 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MycoWeb - Mushroom Identifier</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>MycoWeb — Mushroom Identifier</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <header>
-    <img src="assets/logo.png" alt="MycoWeb Logo" class="logo" />
-    <h1>MycoWeb</h1>
-    <p class="subtitle">Mushroom Identifier</p>
-
-    <div class="language-selector">
-      <select id="language">
+  <header class="top">
+    <img src="assets/logo.png" alt="MycoWeb logo" class="logo">
+    <div class="site-title">
+      <h1 id="siteName">MycoWeb</h1>
+      <p id="siteSub" class="subtitle">Mushroom Identifier</p>
+    </div>
+    <div class="lang-wrap">
+      <select id="langSelect" aria-label="Select language">
         <option value="it">🇮🇹 Italiano</option>
         <option value="en">🇬🇧 English</option>
-        <option value="la">🇱🇦 Latin</option>
+        <option value="la">🏛️ Latin</option>
       </select>
     </div>
   </header>
 
-  <main>
-    <div class="search-area">
-      <label for="color">Colore del cappello:</label>
-      <input type="text" id="color" placeholder="es. rosso, marrone, bianco..." />
+  <main class="container">
+    <aside class="panel filters" role="region" aria-label="Filtri micologici">
+      <h2 id="filtersTitle">Filtri</h2>
 
-      <label for="shape">Forma del cappello:</label>
-      <select id="shape">
-        <option value="">Seleziona</option>
-        <option>Convesso</option>
-        <option>Piatto</option>
-        <option>Campanulato</option>
-        <option>Depresso</option>
-      </select>
+      <label>Colore del cappello
+        <select id="capColor">
+          <option value="">Qualsiasi</option>
+          <option>rosso</option><option>arancio</option><option>giallo</option><option>marrone</option>
+          <option>bianco</option><option>grigio</option><option>verde</option><option>nero</option>
+        </select>
+      </label>
 
-      <label for="gills">Tipo di lamelle:</label>
-      <select id="gills">
-        <option value="">Seleziona</option>
-        <option>Lamelle</option>
-        <option>Pori</option>
-        <option>Aspidi</option>
-      </select>
+      <label>Forma del cappello
+        <select id="capShape">
+          <option value="">Qualsiasi</option>
+          <option>convesso</option><option>piano</option><option>imbutiforme</option>
+          <option>campanulato</option><option>conico</option><option>depressa</option>
+        </select>
+      </label>
 
-      <label for="ring">Anello:</label>
-      <select id="ring">
-        <option value="">Seleziona</option>
-        <option>Presente</option>
-        <option>Assente</option>
-      </select>
+      <label>Tipo imenoforo
+        <select id="hymenium">
+          <option value="">Qualsiasi</option>
+          <option>lamelle</option><option>pori</option><option>pliche</option><option>aculei</option><option>liscio</option>
+        </select>
+      </label>
 
-      <button id="searchBtn">🔍 Cerca</button>
-      <div id="loader" class="hidden">
-        <img src="assets/logo.png" class="spinner" alt="loading" />
+      <label>Forma lamelle / pori
+        <select id="gillForm">
+          <option value="">Qualsiasi</option>
+          <option>libere</option><option>adnate</option><option>decorrenti</option><option>anastomosate</option><option>ramificate</option>
+        </select>
+      </label>
+
+      <label>Colore lamelle / pori
+        <select id="gillColor">
+          <option value="">Qualsiasi</option>
+          <option>bianche</option><option>gialle</option><option>rosate</option><option>marroni</option><option>nere</option>
+        </select>
+      </label>
+
+      <label>Forma gambo
+        <select id="stipe">
+          <option value="">Qualsiasi</option>
+          <option>cilindrico</option><option>bulboso</option><option>affusolato</option><option>allungato</option>
+        </select>
+      </label>
+
+      <label>Anello
+        <select id="ring">
+          <option value="">Qualsiasi</option>
+          <option>presente</option><option>assente</option><option>pendulo</option>
+        </select>
+      </label>
+
+      <label>Volva
+        <select id="volva">
+          <option value="">Qualsiasi</option>
+          <option>assente</option><option>parziale</option><option>totale</option>
+        </select>
+      </label>
+
+      <label>Odore
+        <select id="smell">
+          <option value="">Qualsiasi</option>
+          <option>inodore</option><option>dolce</option><option>fenolico</option><option>terroso</option><option>sgradevole</option>
+        </select>
+      </label>
+
+      <label>Habitat
+        <select id="habitat">
+          <option value="">Qualsiasi</option>
+          <option>bosco di conifere</option><option>bosco di latifoglie</option><option>prato</option><option>su tronchi</option><option>misto</option><option>uliveto</option>
+        </select>
+      </label>
+
+      <label>Stagione
+        <select id="season">
+          <option value="">Qualsiasi</option>
+          <option>primavera</option><option>estate</option><option>autunno</option><option>inverno</option>
+        </select>
+      </label>
+
+      <label>Altitudine
+        <select id="altitude">
+          <option value="">Qualsiasi</option>
+          <option>bassa</option><option>media</option><option>alta</option>
+        </select>
+      </label>
+
+      <button id="searchBtn" class="btn">🔍 Cerca</button>
+
+      <div id="loader" class="loader hidden" role="status" aria-live="polite">
+        <img src="assets/fungo-loader.svg" alt="caricamento" class="loader-img">
+        <div id="loaderText">Ricerca in corso...</div>
       </div>
-    </div>
+    </aside>
 
-    <div id="results"></div>
+    <section class="panel results" id="resultsPanel" aria-live="polite">
+      <h2 id="resultsTitle">Risultati</h2>
+      <div id="resultsList" class="list"></div>
+    </section>
   </main>
 
-  <footer>
-    <p>© 2025 MycoWeb. Explore responsibly.</p>
-  </footer>
+  <footer class="foot">MycoWeb • dati locali + ricerca online</footer>
+
+  <script src="script.js"></script>
 </body>
-</html>
+          </html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>MycoWeb — Ricerca funghi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- splash -->
+  <div id="splash" class="splash">
+    <img src="assets/logo.png" alt="MycoWeb" class="splash-logo">
+    <div class="splash-text">MycoWeb — Il tuo ricercatore di funghi</div>
+  </div>
+
+  <header class="top">
+    <img src="assets/logo.png" alt="MycoWeb logo" class="logo" id="topLogo">
+    <div class="title-wrap">
+      <h1 id="siteTitle">MycoWeb</h1>
+      <p id="siteSubtitle">Il ricercatore di funghi nel bosco digitale</p>
+    </div>
+
+    <div class="lang">
+      <select id="langSelect" aria-label="Lingua">
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="la">🏛️ Latin</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="main">
+    <aside class="panel filters" role="region" aria-label="Filtri">
+      <h2 id="filtersTitle">Filtri</h2>
+
+      <label>Colore del cappello
+        <select id="capColor">
+          <option value="">—</option>
+          <option>bianco</option><option>giallo</option><option>arancio</option><option>rosso</option>
+          <option>marrone</option><option>grigio</option><option>nero</option><option>verde</option><option>ocra</option>
+        </select>
+      </label>
+
+      <label>Forma del cappello
+        <select id="capShape">
+          <option value="">—</option>
+          <option>convesso</option><option>piano</option><option>imbutiforme</option>
+          <option>campanulato</option><option>conico</option><option>depressa</option>
+        </select>
+      </label>
+
+      <label>Tipo imenoforo
+        <select id="hymenium">
+          <option value="">—</option>
+          <option>lamelle</option><option>pori</option><option>pliche</option><option>liscio</option><option>aculei</option>
+        </select>
+      </label>
+
+      <label>Forma lamelle / pori
+        <select id="gillForm">
+          <option value="">—</option>
+          <option>libere</option><option>adnate</option><option>decorrenti</option><option>anastomosate</option><option>ramificate</option>
+        </select>
+      </label>
+
+      <label>Colore lamelle / pori
+        <select id="gillColor">
+          <option value="">—</option>
+          <option>bianche</option><option>gialle</option><option>rosate</option><option>marroni</option><option>nere</option>
+        </select>
+      </label>
+
+      <label>Forma gambo
+        <select id="stipe">
+          <option value="">—</option>
+          <option>cilindrico</option><option>bulboso</option><option>assottigliato</option><option>corto</option><option>allungato</option>
+        </select>
+      </label>
+
+      <label>Anello
+        <select id="ring">
+          <option value="">—</option>
+          <option>presente</option><option>assente</option><option>pendulo</option>
+        </select>
+      </label>
+
+      <label>Volva
+        <select id="volva">
+          <option value="">—</option>
+          <option>assente</option><option>parziale</option><option>totale</option>
+        </select>
+      </label>
+
+      <label>Odore
+        <select id="smell">
+          <option value="">—</option>
+          <option>dolce</option><option>terroso</option><option>fenolico</option><option>inodore</option><option>sgradevole</option><option>fruttato</option>
+        </select>
+      </label>
+
+      <label>Habitat
+        <select id="habitat">
+          <option value="">—</option>
+          <option>bosco di conifere</option><option>bosco di latifoglie</option><option>prato</option><option>su tronchi</option><option>misto</option><option>uliveto</option>
+        </select>
+      </label>
+
+      <label>Stagione
+        <select id="season">
+          <option value="">—</option>
+          <option>primavera</option><option>estate</option><option>autunno</option><option>inverno</option>
+        </select>
+      </label>
+
+      <label>Altitudine
+        <select id="altitude">
+          <option value="">—</option>
+          <option>bassa</option><option>media</option><option>alta</option>
+        </select>
+      </label>
+
+      <button id="searchBtn" class="btn">🔍 Cerca</button>
+
+      <div id="loader" class="loader hidden" aria-live="polite">
+        <img src="assets/fungo-loader.svg" alt="Caricamento" class="loader-img">
+        <div id="loaderText">Ricerca in corso...</div>
+      </div>
+    </aside>
+
+    <section class="panel results" id="resultsPanel">
+      <h2 id="resultsTitle">Risultati</h2>
+      <div id="resultsList" class="list" role="list"></div>
+    </section>
+  </main>
+
+  <footer class="foot">MycoWeb • dati locali + immagini da Wikimedia • v3</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

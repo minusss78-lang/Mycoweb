@@ -1,0 +1,254 @@
+[
+  {
+    "id":1,
+    "nome_latino":"Amanita muscaria",
+    "nome_italiano":"Amanita muscaria",
+    "nome_inglese":"Fly agaric",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Amanita_muscaria_3_vliegenzwammen_op_rij.jpg",
+    "caratteri":{
+      "colore_cappello":"rosso",
+      "forma_cappello":"convesso",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"libere",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"cilindrico",
+      "anello":"presente",
+      "volva":"parziale",
+      "odore":"inodore",
+      "habitat":"bosco di conifere",
+      "altitudine":"media",
+      "stagione":"autunno"
+    }
+  },
+  {
+    "id":2,
+    "nome_latino":"Boletus edulis",
+    "nome_italiano":"Porcino",
+    "nome_inglese":"King bolete",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/b/bb/Boletus_edulis_EtgHollande_2012_207.jpg",
+    "caratteri":{
+      "colore_cappello":"marrone",
+      "forma_cappello":"convesso",
+      "imenoforo":"pori",
+      "forma_lamelle":"n/a",
+      "colore_lamelle":"bianco",
+      "forma_gambo":"bulboso",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"gradevole",
+      "habitat":"bosco misto",
+      "altitudine":"media",
+      "stagione":"estate-autunno"
+    }
+  },
+  {
+    "id":3,
+    "nome_latino":"Cantharellus cibarius",
+    "nome_italiano":"Finferlo",
+    "nome_inglese":"Chanterelle",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/2/24/Cantharellus_cibarius_3.jpg",
+    "caratteri":{
+      "colore_cappello":"giallo",
+      "forma_cappello":"imbutiforme",
+      "imenoforo":"pliche",
+      "forma_lamelle":"decorrenti",
+      "colore_lamelle":"gialle",
+      "forma_gambo":"affusolato",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"fruttato",
+      "habitat":"bosco di latifoglie",
+      "altitudine":"bassa",
+      "stagione":"estate"
+    }
+  },
+  {
+    "id":4,
+    "nome_latino":"Lentinula edodes",
+    "nome_italiano":"Shiitake",
+    "nome_inglese":"Shiitake",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/b/bc/Lentinula_edodes_20101113_a.jpg",
+    "caratteri":{
+      "colore_cappello":"marrone chiaro",
+      "forma_cappello":"piatto",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"aderenti",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"corto",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"legnoso",
+      "habitat":"su tronchi",
+      "altitudine":"bassa",
+      "stagione":"autunno"
+    }
+  },
+  {
+    "id":5,
+    "nome_latino":"Tricholoma matsutake",
+    "nome_italiano":"Matsutake",
+    "nome_inglese":"Matsutake",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/9/9b/Tricholoma_matsutake_02.jpg",
+    "caratteri":{
+      "colore_cappello":"marrone scuro",
+      "forma_cappello":"convesso",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"libere",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"grosso",
+      "anello":"presente",
+      "volva":"assente",
+      "odore":"resinoso",
+      "habitat":"bosco di conifere",
+      "altitudine":"alta",
+      "stagione":"autunno"
+    }
+  },
+  {
+    "id":6,
+    "nome_latino":"Russula virescens",
+    "nome_italiano":"Russula virescens",
+    "nome_inglese":"Green-cracking Russula",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/9/9f/Russula_virescens1.jpg",
+    "caratteri":{
+      "colore_cappello":"verde",
+      "forma_cappello":"convesso",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"libere",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"cilindrico",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"dolce",
+      "habitat":"bosco di latifoglie",
+      "altitudine":"bassa",
+      "stagione":"estate"
+    }
+  },
+  {
+    "id":7,
+    "nome_latino":"Lactarius deliciosus",
+    "nome_italiano":"Finferlo arancio",
+    "nome_inglese":"Saffron milk cap",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/6/64/Lactarius_deliciosus_20050808.jpg",
+    "caratteri":{
+      "colore_cappello":"arancio",
+      "forma_cappello":"convesso",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"decorrenti",
+      "colore_lamelle":"arancioni",
+      "forma_gambo":"cilindrico",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"latte-arancio",
+      "habitat":"bosco di conifere",
+      "altitudine":"media",
+      "stagione":"autunno"
+    }
+  },
+  {
+    "id":8,
+    "nome_latino":"Pleurotus ostreatus",
+    "nome_italiano":"Orecchione",
+    "nome_inglese":"Oyster mushroom",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/1/1e/Pleurotus_ostreatus_007.jpg",
+    "caratteri":{
+      "colore_cappello":"grigio",
+      "forma_cappello":"piano",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"decorrenti",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"corto",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"legnoso",
+      "habitat":"su tronchi",
+      "altitudine":"bassa",
+      "stagione":"autunno"
+    }
+  },
+  {
+    "id":9,
+    "nome_latino":"Coprinus comatus",
+    "nome_italiano":"Coprinus comatus",
+    "nome_inglese":"Shaggy inkcap",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/5/50/Coprinus_comatus_g2.jpg",
+    "caratteri":{
+      "colore_cappello":"bianco",
+      "forma_cappello":"campanulato",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"libere",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"cilindrico",
+      "anello":"presente",
+      "volva":"assente",
+      "odore":"gradevole",
+      "habitat":"prato",
+      "altitudine":"bassa",
+      "stagione":"primavera"
+    }
+  },
+  {
+    "id":10,
+    "nome_latino":"Amanita phalloides",
+    "nome_italiano":"Amanita phalloides",
+    "nome_inglese":"Death cap",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/4/4b/Amanita_phalloides.jpg",
+    "caratteri":{
+      "colore_cappello":"verde-oliva",
+      "forma_cappello":"convesso",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"libere",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"cilindrico",
+      "anello":"presente",
+      "volva":"totale",
+      "odore":"fenolico",
+      "habitat":"bosco di latifoglie",
+      "altitudine":"bassa",
+      "stagione":"estate"
+    }
+  },
+  {
+    "id":11,
+    "nome_latino":"Suillus luteus",
+    "nome_italiano":"Suillus luteus",
+    "nome_inglese":"Slippery Jack",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/8/8e/Suillus_luteus_2002.jpg",
+    "caratteri":{
+      "colore_cappello":"marrone",
+      "forma_cappello":"convesso",
+      "imenoforo":"pori",
+      "forma_lamelle":"n/a",
+      "colore_lamelle":"gialle",
+      "forma_gambo":"cilindrico",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"mild",
+      "habitat":"bosco di conifere",
+      "altitudine":"bassa",
+      "stagione":"estate-autunno"
+    }
+  },
+  {
+    "id":12,
+    "nome_latino":"Flammulina velutipes",
+    "nome_italiano":"Enoki",
+    "nome_inglese":"Enokitake",
+    "immagine":"https://upload.wikimedia.org/wikipedia/commons/6/69/Flammulina_velutipes.jpg",
+    "caratteri":{
+      "colore_cappello":"giallo",
+      "forma_cappello":"campanulato",
+      "imenoforo":"lamelle",
+      "forma_lamelle":"libere",
+      "colore_lamelle":"bianche",
+      "forma_gambo":"allungato",
+      "anello":"assente",
+      "volva":"assente",
+      "odore":"debole",
+      "habitat":"su tronchi",
+      "altitudine":"bassa",
+      "stagione":"autunno-inverno"
+    }
+  }
+    ]

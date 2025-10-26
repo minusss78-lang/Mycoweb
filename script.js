@@ -1,54 +1,49 @@
-async function searchMushrooms() {
-  const spinner = document.getElementById("spinner");
-  const resultsDiv = document.getElementById("results");
-  spinner.style.display = "block";
-  resultsDiv.innerHTML = "";
+const form = document.getElementById("searchForm");
+const loader = document.getElementById("loader");
+const results = document.getElementById("results");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  results.innerHTML = "";
+  loader.classList.remove("hidden");
 
   const capColor = document.getElementById("capColor").value.toLowerCase();
   const hymenium = document.getElementById("hymenium").value.toLowerCase();
-  const ring = document.getElementById("ring").value.toLowerCase();
+  const anello = document.getElementById("anello").value.toLowerCase();
   const habitat = document.getElementById("habitat").value.toLowerCase();
 
   try {
-    const response = await fetch("funghi.json");
-    const data = await response.json();
+    const res = await fetch("funghi.json");
+    const data = await res.json();
 
-    const filtered = data.filter(f => {
-      return (!capColor || f.colore_cappello.includes(capColor)) &&
-             (!hymenium || f.imenoforo.includes(hymenium)) &&
-             (!ring || f.anello.includes(ring)) &&
-             (!habitat || f.habitat.includes(habitat));
-    });
+    // Filtro multiplo: trova i funghi che corrispondono ai parametri scelti
+    const filtered = data.filter(f =>
+      (!capColor || f.capColor.includes(capColor)) &&
+      (!hymenium || f.hymenium.includes(hymenium)) &&
+      (!anello || f.anello.includes(anello)) &&
+      (!habitat || f.habitat.includes(habitat))
+    );
 
-    spinner.style.display = "none";
-
-    if (filtered.length === 0) {
-      resultsDiv.innerHTML = `<p>Nessun fungo trovato nel database locale. Cerco online...</p>`;
-      const query = [capColor, hymenium, ring, habitat].filter(Boolean).join(" ");
-      const wiki = `https://it.wikipedia.org/wiki/${query}`;
-      const mushExp = `https://www.mushroomexpert.com/${query.replace(" ", "_")}.html`;
-      resultsDiv.innerHTML += `<p><a href="${wiki}" target="_blank">Wikipedia</a> | <a href="${mushExp}" target="_blank">MushroomExpert</a></p>`;
-      return;
+    if (filtered.length > 0) {
+      results.innerHTML = filtered.map(f =>
+        `<div class="fungo">
+          <h3>${f.nome} <em>(${f.nomeLatino})</em></h3>
+          <img src="${f.img}" alt="${f.nome}" style="width:100%;border-radius:8px;">
+          <p><b>Colore cappello:</b> ${f.capColor}</p>
+          <p><b>Tipo imenoforo:</b> ${f.hymenium}</p>
+          <p><b>Anello:</b> ${f.anello}</p>
+          <p><b>Habitat:</b> ${f.habitat}</p>
+        </div>`
+      ).join("");
+    } else {
+      // fallback su Wikipedia se non trova nulla
+      const query = [capColor, hymenium, anello, habitat].filter(Boolean).join(" ");
+      const wikiUrl = `https://it.wikipedia.org/w/index.php?search=${encodeURIComponent(query)}+fungo`;
+      results.innerHTML = `<p>Nessun risultato nel database locale.<br><a href="${wikiUrl}" target="_blank">Cerca su Wikipedia 🔗</a></p>`;
     }
-
-    resultsDiv.innerHTML = filtered.map(f => `
-      <div class="result-item">
-        <h3>${f.nome_latino} (${f.nome_italiano})</h3>
-        <img src="${f.immagine}" alt="${f.nome_italiano}" width="100">
-        <p><strong>Colore cappello:</strong> ${f.colore_cappello}</p>
-        <p><strong>Imenoforo:</strong> ${f.imenoforo}</p>
-        <p><strong>Habitat:</strong> ${f.habitat}</p>
-      </div>
-    `).join("");
   } catch (err) {
-    spinner.style.display = "none";
-    resultsDiv.innerHTML = `<p>Errore nel caricamento del database.</p>`;
+    results.innerHTML = `<p>Errore durante la ricerca.</p>`;
+  } finally {
+    loader.classList.add("hidden");
   }
-}
-
-function changeLanguage() {
-  const lang = document.getElementById("language").value;
-  document.querySelectorAll("[data-it]").forEach(el => {
-    el.innerText = el.getAttribute(`data-${lang}`);
-  });
-}
+});

@@ -1,68 +1,61 @@
-// MycoWeb final script - ricerca locale fuzzy + ricerca online filtrata - lingue IT/EN/LA
-const langSelect = document.getElementById('langSelect');
-const searchBtn = document.getElementById('searchBtn');
-const loader = document.getElementById('loader');
-const loaderText = document.getElementById('loaderText');
-const resultsList = document.getElementById('resultsList');
-const resultsTitle = document.getElementById('resultsTitle');
-const filtersTitle = document.getElementById('filtersTitle');
+// MycoWeb - motore di ricerca migliorato (scoring + tolleranza su campi mancanti)
 
-const DICT = {
-  it: {
-    filters: 'Filtri',
-    results: 'Risultati',
-    searching: 'Ricerca in corso...',
-    none: 'Nessun fungo trovato nel database locale. Provo online...',
-    searchBtn: '🔍 Cerca'
-  },
-  en: {
-    filters: 'Filters',
-    results: 'Results',
-    searching: 'Searching...',
-    none: 'No mushrooms found locally. Trying online...',
-    searchBtn: '🔍 Search'
-  },
-  la: {
-    filters: 'Filtra',
-    results: 'Resulta',
-    searching: 'Inquisitione...',
-    none: 'Nullus fungus repertus localiter. In rete quaeritur...',
-    searchBtn: '🔍 Quaere'
-  }
+// elementi UI (compatibile con le versioni precedenti)
+const searchBtn = document.getElementById('searchBtn') || document.querySelector('.search-btn');
+const loaderWrap = document.getElementById('loader') || document.querySelector('.loader');
+const resultsList = document.getElementById('resultsList') || document.getElementById('results') || document.querySelector('.results');
+const loaderText = document.getElementById('loaderText');
+
+// utilità
+const s = v => v ? String(v).toLowerCase() : '';
+
+// campi e pesi (più alto = più importante)
+const FIELD_MAP = {
+  capColor: { weight: 3, jsonPath: ['caratteri.colore_cappello', 'colore_cappello', 'capColor'] },
+  hymenium: { weight: 3, jsonPath: ['caratteri.imenoforo', 'imenoforo', 'hymenium'] },
+  stipe: { weight: 2, jsonPath: ['caratteri.forma_gambo', 'forma_gambo', 'stipe'] },
+  gillForm: { weight: 1, jsonPath: ['caratteri.forma_lamelle', 'forma_lamelle', 'gillForm'] },
+  gillColor: { weight: 1, jsonPath: ['caratteri.colore_lamelle', 'colore_lamelle', 'gillColor'] },
+  ring: { weight: 1, jsonPath: ['caratteri.anello', 'anello', 'ring'] },
+  habitat: { weight: 1, jsonPath: ['caratteri.habitat', 'habitat'] },
+  season: { weight: 1, jsonPath: ['caratteri.stagione', 'stagione'] }
 };
 
-function setLanguage(l='it'){
-  filtersTitle.textContent = DICT[l].filters;
-  resultsTitle.textContent = DICT[l].results;
-  loaderText.textContent = DICT[l].searching;
-  searchBtn.textContent = DICT[l].searchBtn;
-}
-langSelect.addEventListener('change', ()=> setLanguage(langSelect.value));
-setLanguage(langSelect.value || 'it');
+// keywords micologiche per filtro online
+const MICO_KEYWORDS = /(mushroom|fungus|amanita|boletus|russula|lactarius|cantharellus|agaricus|pleurotus|suillus|cortinarius|hydnum|hericium|coprinus|porcino|porcini)/i;
 
-let localDB = [];
-
-// load JSON (once)
-async function loadLocalDB(){
-  if(localDB.length) return localDB;
-  try{
-    const r = await fetch('funghi.json', {cache:'no-cache'});
+// carica DB locale una volta
+let localDB = null;
+async function loadLocalDB() {
+  if (localDB) return localDB;
+  try {
+    const r = await fetch('funghi.json', { cache: 'no-cache' });
     localDB = await r.json();
-    console.log('Local DB loaded:', localDB.length);
-  }catch(e){
-    console.warn('Unable to load funghi.json', e);
+    console.log('Local DB caricato voci:', localDB.length);
+  } catch (e) {
+    console.warn('Errore caricamento funghi.json', e);
     localDB = [];
   }
   return localDB;
 }
 
-// helper lowercase safe
-const s = v => v ? String(v).toLowerCase() : '';
+// helper per leggere valori nested con più chiavi possibili
+function getFirstValue(obj, paths) {
+  if (!obj) return '';
+  for (const p of paths) {
+    const parts = p.split('.');
+    let cur = obj;
+    let ok = true;
+    for (const part of parts) {
+      if (cur && Object.prototype.hasOwnProperty.call(cur, part)) cur = cur[part];
+      else { ok = false; break; }
+    }
+    if (ok && cur != null) return String(cur);
+  }
+  return '';
+}
 
-// micro-list of micological keywords to filter online hits
-const MICO_KEYWORDS = /(mushroom|fungus|amanita|boletus|russula|lactarius|cantharellus|agaricus|pleurotus|suillus|cortinarius|hydnum|hericium|coprinus|porcino|porcini)/i;
-
-// fetch thumbnail from wiki by title
+// prova a recuperare thumbnail da Wikipedia (come prima)
 async function wikiThumb(title){
   if(!title) return null;
   const t = encodeURIComponent(title.replace(/\s+/g,'_'));
@@ -77,131 +70,159 @@ async function wikiThumb(title){
         if(p && p.thumbnail && p.thumbnail.source) return p.thumbnail.source;
       }
     }
-  }catch(e){ console.warn('wikiThumb error', e); }
+  }catch(e){ console.warn('wikiThumb', e); }
   return null;
 }
-
-// build MushroomExpert search link
 const mushroomExpertSearch = q => `https://www.mushroomexpert.com/search?q=${encodeURIComponent(q)}`;
 
-// main search
-searchBtn.addEventListener('click', async ()=>{
-  loader.classList.remove('hidden');
-  resultsList.innerHTML = '';
-  loaderText.textContent = DICT[langSelect.value || 'it'].searching;
-
-  // collect filters (primary ones are capColor, hymenium, stipe)
-  const filters = {
-    capColor: s(document.getElementById('capColor').value),
-    capShape: s(document.getElementById('capShape').value),
-    hymenium: s(document.getElementById('hymenium').value),
-    gillForm: s(document.getElementById('gillForm').value),
-    stipe: s(document.getElementById('stipe').value),
-    ring: s(document.getElementById('ring').value),
-    habitat: s(document.getElementById('habitat').value),
-    season: s(document.getElementById('season').value)
-  };
+// funzione principale: scoring + ricerca rilassata + fallback online
+async function performSearch(rawFilters) {
+  // mostra loader
+  if (loaderWrap) loaderWrap.classList.remove('hidden');
+  if (loaderText) loaderText.textContent = 'Ricerca in corso...';
 
   const db = await loadLocalDB();
 
-  // fuzzy local matching: a record matches if ALL provided (non-empty) filters are substrings of corresponding fields
-  const localMatches = db.filter(item=>{
-    const c = item.caratteri || {};
-    try{
-      if(filters.capColor && !s(c.colore_cappello).includes(filters.capColor)) return false;
-      if(filters.capShape && !s(c.forma_cappello).includes(filters.capShape)) return false;
-      if(filters.hymenium && !s(c.imenoforo).includes(filters.hymenium)) return false;
-      if(filters.gillForm && !s(c.forma_lamelle).includes(filters.gillForm)) return false;
-      if(filters.stipe && !s(c.forma_gambo).includes(filters.stipe)) return false;
-      if(filters.ring && !s(c.anello).includes(filters.ring)) return false;
-      if(filters.habitat && !s(c.habitat).includes(filters.habitat)) return false;
-      if(filters.season && !s(c.stagione).includes(filters.season)) return false;
-      return true;
-    }catch(e){ return false; }
+  // normalizza i filtri forniti dall'UI
+  const filters = {};
+  Object.keys(FIELD_MAP).forEach(k => {
+    filters[k] = s(rawFilters[k] || '');
   });
 
-  // if local matches found -> show them (order: most fields matched first)
-  if(localMatches.length > 0){
-    // sort by number of non-empty filter matches (more specific first)
-    const scored = localMatches.map(m => {
-      let score=0;
-      const c = m.caratteri || {};
-      Object.keys(filters).forEach(k => {
-        if(filters[k] && s(c[{
-          capColor:'colore_cappello', capShape:'forma_cappello', hymenium:'imenoforo',
-          gillForm:'forma_lamelle', stipe:'forma_gambo', ring:'anello', habitat:'habitat', season:'stagione'
-        }[k]]).includes(filters[k])) score++;
-      });
-      return {m,score};
-    }).sort((a,b)=>b.score-a.score).map(x=>x.m);
+  // Calcolo score per ogni record
+  const scored = [];
+  for (const rec of db) {
+    let score = 0;
+    // per ogni filtro fornito aggiungi peso se record contiene substring corrispondente
+    Object.keys(FIELD_MAP).forEach(k => {
+      const val = filters[k];
+      if (!val) return; // filtro non fornito -> ignoralo
+      const candidate = s(getFirstValue(rec, FIELD_MAP[k].jsonPath));
+      if (!candidate) {
+        // campo mancante nel record -> NON penalizziamo (tolleranza)
+        return;
+      }
+      if (candidate.includes(val)) {
+        score += FIELD_MAP[k].weight;
+      } else {
+        // fuzzy: se il candidato contiene parole separate che includono parte del filtro, conta poco
+        const candidateParts = candidate.split(/[\s,\/-]+/);
+        if (candidateParts.some(p => p.includes(val) || val.includes(p))) {
+          score += Math.max(1, Math.floor(FIELD_MAP[k].weight/2));
+        }
+      }
+    });
 
-    // attempt to fetch thumbs in parallel
-    const thumbs = await Promise.all(scored.map(it => wikiThumb(it.nome_latino).then(u=>u || it.immagine || it.img || '')));
+    // anche se score = 0, possiamo considerare il record in una seconda fase (search relaxed)
+    if (score > 0) scored.push({ rec, score });
+  }
 
+  // se trovi match >0 ordinati e restituisci
+  if (scored.length > 0) {
+    scored.sort((a,b)=>b.score-a.score);
+    const results = scored.map(x => x.rec);
+    if (loaderWrap) loaderWrap.classList.add('hidden');
+    return results.slice(0, 200); // limite risultati
+  }
+
+  // ---- NESSUN MATCH SPECIFICO: esegui "ricerca rilassata"
+  // Trova record in cui QUALSIASI campo contiene ciascuna parola del filtro (OR across fields)
+  const anyFilterWords = [];
+  Object.values(filters).forEach(v => { if (v) anyFilterWords.push(...v.split(/\s+/)); });
+
+  const relaxed = db.filter(rec=>{
+    if (anyFilterWords.length === 0) return false;
+    // concatena tutte le stringhe rilevanti del record e cerca se contiene almeno una parola
+    let hay = '';
+    // includi i campi chiave e alcuni descrittivi
+    hay += ' ' + s(getFirstValue(rec, ['nome_italiano','nome_inglese','nome_latino']));
+    Object.keys(FIELD_MAP).forEach(k => {
+      hay += ' ' + s(getFirstValue(rec, FIELD_MAP[k].jsonPath));
+    });
+    // match se almeno una parola appare in hay
+    return anyFilterWords.some(w => w && hay.includes(w));
+  });
+
+  if (relaxed.length > 0) {
+    if (loaderWrap) loaderWrap.classList.add('hidden');
+    return relaxed.slice(0, 200);
+  }
+
+  // nessun risultato locale → ritorna []
+  if (loaderWrap) loaderWrap.classList.add('hidden');
+  return [];
+}
+
+// funzione wrapper attivata da bottone
+async function runSearchFromUI() {
+  // prendi valori UI: gli ID devono corrispondere a quelli nel tuo index.html
+  const raw = {
+    capColor: document.getElementById('capColor') ? document.getElementById('capColor').value : '',
+    capShape: document.getElementById('capShape') ? document.getElementById('capShape').value : '',
+    hymenium: document.getElementById('hymenium') ? document.getElementById('hymenium').value : '',
+    gillForm: document.getElementById('gillForm') ? document.getElementById('gillForm').value : '',
+    stipe: document.getElementById('stipe') ? document.getElementById('stipe').value : '',
+    ring: document.getElementById('ring') ? document.getElementById('ring').value : '',
+    habitat: document.getElementById('habitat') ? document.getElementById('habitat').value : '',
+    season: document.getElementById('season') ? document.getElementById('season').value : ''
+  };
+
+  // pulisci area risultati
+  if (resultsList) resultsList.innerHTML = '';
+
+  // esegui ricerca locale robusta
+  const localResults = await performSearch(raw);
+
+  if (localResults.length > 0) {
+    // Mostra risultati locali (tentando thumbs wiki paralleli)
+    const thumbs = await Promise.all(localResults.map(r => wikiThumb(r.nome_latino).then(u=>u || r.immagine || r.img || '')));
     resultsList.innerHTML = '';
-    scored.forEach((m,i)=>{
-      const imgsrc = thumbs[i] || '';
+    localResults.forEach((r, i) => {
+      const img = thumbs[i] || r.immagine || r.img || '';
+      const title = r.nome_italiano || r.nome_inglese || r.nome_latino || 'Sconosciuto';
+      const latin = r.nome_latino || '';
+      const habitat = (r.caratteri && r.caratteri.habitat) ? r.caratteri.habitat : (r.habitat || '');
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <img class="thumb" src="${imgsrc}" alt="${m.nome_italiano||m.nome_latino}">
+        <img class="thumb" src="${img}" alt="${title}">
         <div>
-          <h3>${m.nome_italiano || m.nome_inglese || m.nome_latino}</h3>
-          <p class="small"><em>${m.nome_latino || ''}</em></p>
-          <p class="small">${m.caratteri && m.caratteri.habitat ? m.caratteri.habitat : ''}</p>
+          <h3>${title}</h3>
+          <p class="small"><em>${latin}</em></p>
+          <p class="small">${habitat}</p>
           <p style="margin-top:8px">
-            <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/${encodeURIComponent((m.nome_latino||'').replace(/\s+/g,'_'))}">Wikipedia</a>
+            <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/${encodeURIComponent((latin||title).replace(/\s+/g,'_'))}">Wikipedia</a>
             &nbsp;|&nbsp;
-            <a target="_blank" rel="noopener" href="${mushroomExpertSearch(m.nome_latino || m.nome_italiano || '')}">MushroomExpert</a>
+            <a target="_blank" rel="noopener" href="${mushroomExpertSearch(latin || title)}">MushroomExpert</a>
           </p>
         </div>`;
       resultsList.appendChild(card);
     });
-    loader.classList.add('hidden');
     return;
   }
 
-  // NO local matches -> perform Wikipedia search (EN) using the provided filters keywords
+  // fallback online: costruisci query e cerca su Wikipedia (usa la API search come prima)
   const qParts = [];
-  Object.values(filters).forEach(v => { if(v) qParts.push(v); });
+  Object.keys(FIELD_MAP).forEach(k => {
+    const val = s(raw[k] || '');
+    if (val) qParts.push(val);
+  });
   const query = qParts.join(' ').trim() || 'mushroom';
 
-  try{
-    const wikiSearchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`;
-    const r = await fetch(wikiSearchUrl);
-    const j = await r.json();
-    const hits = (j && j.query && j.query.search) ? j.query.search.slice(0,8) : [];
+  // mostra link di fallback (se vuoi, qui possiamo aggiungere chiamata API diretta)
+  resultsList.innerHTML = `<p>Nessun risultato nel database locale. Provo su Wikipedia / MushroomExpert...</p>
+    <p>🔎 <a href="https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(query)}" target="_blank">Cerca su Wikipedia</a>
+    &nbsp;|&nbsp;<a href="${mushroomExpertSearch(query)}" target="_blank">Cerca su MushroomExpert</a></p>`;
+}
 
-    const filtered = [];
-    for(const hit of hits){
-      // basic filter: snippet or title must contain micological keyword
-      if(MICO_KEYWORDS.test(hit.snippet) || MICO_KEYWORDS.test(hit.title)){
-        const title = hit.title;
-        const thumb = await wikiThumb(title);
-        filtered.push({title,thumb,link:`https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/\s+/g,'_'))}`});
-      }
-    }
-
-    if(filtered.length>0){
-      resultsList.innerHTML = '';
-      filtered.forEach(f=>{
-        const card = document.createElement('div'); card.className='card';
-        card.innerHTML = `
-          <img class="thumb" src="${f.thumb || ''}" alt="${f.title}">
-          <div>
-            <h3>${f.title}</h3>
-            <p class="small"><em>Wikipedia</em></p>
-            <p style="margin-top:8px"><a href="${f.link}" target="_blank">Scheda Wikipedia</a></p>
-          </div>`;
-        resultsList.appendChild(card);
-      });
-      loader.classList.add('hidden');
-      return;
-    }
-  }catch(e){ console.warn('Wikipedia search failed', e); }
-
-  // fallback: show MushroomExpert link for the query
-  resultsList.innerHTML = `<p>${DICT[langSelect.value || 'it'].none}</p>
-    <p>🔎 <a target="_blank" rel="noopener" href="${mushroomExpertSearch(query)}">Cerca su MushroomExpert: ${query}</a></p>`;
-  loader.classList.add('hidden');
-});
+// collega bottone (compatibile con diversi index)
+if (searchBtn) {
+  searchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    runSearchFromUI();
+  });
+} else {
+  // fallback: cerca un pulsante con classe .btn
+  const altBtn = document.querySelector('.btn, .search-btn');
+  if (altBtn) altBtn.addEventListener('click', (e)=>{ e.preventDefault(); runSearchFromUI(); });
+}

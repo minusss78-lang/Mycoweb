@@ -1,86 +1,90 @@
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-  background-image: url('assets/pattern_fungi.png');
-  background-repeat: repeat;
+  font-family: "Poppins", sans-serif;
+  background: #1a1a1a url("assets/mushroom_pattern.png") repeat;
   background-size: 200px;
-  background-attachment: fixed;
-  background-color: #1a1a1a;
-  color: #f4f4f4;
+  color: #f3f3f3;
   text-align: center;
 }
 
 header {
-  padding: 20px 0;
+  padding: 20px;
 }
 
 .logo {
-  width: 250px;
-  margin: 20px auto;
+  width: 120px;
   display: block;
+  margin: 0 auto 10px;
 }
 
 h1 {
-  font-size: 1.8em;
-  color: #f5deb3;
+  font-size: 2rem;
+  margin-bottom: 5px;
 }
 
-select, input, button {
-  padding: 10px;
+.subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.language-select {
+  margin-bottom: 15px;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 10px #000;
+}
+
+select, button {
+  width: 90%;
+  padding: 8px;
+  margin: 8px 0;
   border-radius: 8px;
   border: none;
-  margin: 5px;
-  font-size: 1em;
+  font-size: 1rem;
 }
 
 button {
-  background-color: #4caf50;
+  background: #4caf50;
   color: white;
   cursor: pointer;
-  transition: background 0.3s;
-}
-button:hover {
-  background-color: #3d8b40;
+  transition: 0.3s;
 }
 
-/* Loader funghetto */
-.spinner {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  margin: 30px auto;
-  border: 5px solid #b58900;
-  border-top-color: transparent;
-  animation: spin 1s linear infinite;
+button:hover {
+  background: #45a049;
 }
+
+.spinner {
+  display: none;
+  margin: 20px auto;
+  width: 60px;
+  height: 60px;
+  background-image: url("assets/funghetto.png");
+  background-size: cover;
+  animation: spin 2s linear infinite;
+}
+
 @keyframes spin {
+  from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Risultati */
-.result-card {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 2px solid #4caf50;
-  border-radius: 15px;
-  padding: 15px;
-  margin: 15px auto;
-  max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-  transition: transform 0.3s, background-color 0.3s;
-}
-.result-card:hover {
-  transform: scale(1.03);
-  background-color: rgba(255,255,255,0.15);
-}
-.result-card img.thumb {
-  width: 100%;
-  border-radius: 10px;
+.results {
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: left;
 }
 
-/* Footer o info */
-footer {
-  padding: 20px;
-  font-size: 0.9em;
-  color: #aaa;
+.result-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
 }

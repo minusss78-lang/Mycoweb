@@ -1,67 +1,105 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MycoWeb</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MycoWeb — Mushroom identifier</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <img src="assets/logo.png" alt="MycoWeb Logo" class="logo" />
+  <header class="top">
+    <img src="assets/logo.png" alt="MycoWeb logo" class="logo" />
+    <div class="titleBlock">
+      <h1 id="siteTitle">MycoWeb</h1>
+      <p id="siteSubtitle" class="subtitle">Il tuo esploratore micologico</p>
+    </div>
 
-    <form id="searchForm">
-      <div class="field">
-        <label>Colore del cappello</label>
+    <div class="langWrap">
+      <select id="langSelect" aria-label="Lingua">
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="la">🏛️ Latin</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <aside class="panel filters" aria-label="Filtri">
+      <h2 id="filtersTitle">Filtri</h2>
+
+      <label data-i18n="capColorLabel">Colore del cappello
         <select id="capColor">
-          <option value="">--</option>
-          <option value="rosso">Rosso</option>
-          <option value="marrone">Marrone</option>
-          <option value="giallo">Giallo</option>
-          <option value="bianco">Bianco</option>
-          <option value="nero">Nero</option>
-          <option value="grigio">Grigio</option>
+          <option value="">—</option>
+          <option>rosso</option><option>arancio</option><option>giallo</option><option>marrone</option>
+          <option>bianco</option><option>grigio</option><option>verde</option><option>nero</option>
         </select>
-      </div>
+      </label>
 
-      <div class="field">
-        <label>Tipo di imenoforo</label>
+      <label data-i18n="capShapeLabel">Forma del cappello
+        <select id="capShape">
+          <option value="">—</option>
+          <option>convesso</option><option>piano</option><option>imbutiforme</option><option>campanulato</option>
+        </select>
+      </label>
+
+      <label data-i18n="hymeniumLabel">Tipo imenoforo
         <select id="hymenium">
-          <option value="">--</option>
-          <option value="lamelle">Lamelle</option>
-          <option value="pori">Pori</option>
-          <option value="aculei">Aculei</option>
-          <option value="liscio">Liscio</option>
+          <option value="">—</option>
+          <option>lamelle</option><option>pori</option><option>pliche</option><option>aculei</option><option>liscio</option>
         </select>
-      </div>
+      </label>
 
-      <div class="field">
-        <label>Presenza di anello</label>
-        <select id="anello">
-          <option value="">--</option>
-          <option value="sì">Sì</option>
-          <option value="no">No</option>
+      <label data-i18n="gillFormLabel">Forma lamelle / pori
+        <select id="gillForm">
+          <option value="">—</option>
+          <option>libere</option><option>adnate</option><option>decorrenti</option><option>anastomosate</option>
         </select>
-      </div>
+      </label>
 
-      <div class="field">
-        <label>Habitat</label>
+      <label data-i18n="stipeLabel">Forma gambo
+        <select id="stipe">
+          <option value="">—</option>
+          <option>cilindrico</option><option>bulboso</option><option>affusolato</option><option>allungato</option>
+        </select>
+      </label>
+
+      <label data-i18n="ringLabel">Anello
+        <select id="ring">
+          <option value="">—</option>
+          <option>presente</option><option>assente</option><option>pendulo</option>
+        </select>
+      </label>
+
+      <label data-i18n="habitatLabel">Habitat
         <select id="habitat">
-          <option value="">--</option>
-          <option value="bosco">Bosco</option>
-          <option value="prato">Prato</option>
-          <option value="tronchi">Tronchi</option>
-          <option value="radure">Radure</option>
+          <option value="">—</option>
+          <option>bosco</option><option>prato</option><option>tronchi</option><option>ulivi</option>
         </select>
+      </label>
+
+      <label data-i18n="seasonLabel">Stagione
+        <select id="season">
+          <option value="">—</option>
+          <option>primavera</option><option>estate</option><option>autunno</option><option>inverno</option>
+        </select>
+      </label>
+
+      <button id="searchBtn" class="btn" aria-label="Cerca">🔍 Cerca</button>
+
+      <div id="loader" class="loader hidden" role="status" aria-live="polite">
+        <img src="assets/fungo-loader.svg" alt="caricamento" class="loaderImg" />
+        <div id="loaderText">Ricerca in corso...</div>
       </div>
+    </aside>
 
-      <button type="submit" class="search-btn">🔍 Cerca</button>
-    </form>
+    <section class="panel results" id="resultsPanel" aria-live="polite">
+      <h2 id="resultsTitle">Risultati</h2>
+      <div id="resultsList" class="list"></div>
+    </section>
+  </main>
 
-    <div id="loader" class="loader hidden"></div>
-    <div id="results" class="results"></div>
-  </div>
+  <footer class="foot">MycoWeb • dati locali + ricerca online</footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

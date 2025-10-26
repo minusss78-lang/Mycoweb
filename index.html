@@ -1,65 +1,66 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MycoWeb - Ricerca Funghi</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MycoWeb</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="MycoWeb Logo" class="logo">
-    <h1>MycoWeb</h1>
-    <p class="subtitle">Il tuo ricercatore di funghi intelligente</p>
+  <div class="container">
+    <img src="assets/logo.png" alt="MycoWeb Logo" class="logo" />
 
-    <div class="language-select">
-      <select id="language" onchange="changeLanguage()">
-        <option value="it">🇮🇹 Italiano</option>
-        <option value="en">🇬🇧 English</option>
-      </select>
-    </div>
-  </header>
+    <form id="searchForm">
+      <div class="field">
+        <label>Colore del cappello</label>
+        <select id="capColor">
+          <option value="">--</option>
+          <option value="rosso">Rosso</option>
+          <option value="marrone">Marrone</option>
+          <option value="giallo">Giallo</option>
+          <option value="bianco">Bianco</option>
+          <option value="nero">Nero</option>
+          <option value="grigio">Grigio</option>
+        </select>
+      </div>
 
-  <main>
-    <div class="form-container">
-      <label data-it="Colore del cappello" data-en="Cap color">Colore del cappello</label>
-      <select id="capColor">
-        <option value="">--</option>
-        <option value="rosso">Rosso</option>
-        <option value="marrone">Marrone</option>
-        <option value="bianco">Bianco</option>
-        <option value="giallo">Giallo</option>
-      </select>
+      <div class="field">
+        <label>Tipo di imenoforo</label>
+        <select id="hymenium">
+          <option value="">--</option>
+          <option value="lamelle">Lamelle</option>
+          <option value="pori">Pori</option>
+          <option value="aculei">Aculei</option>
+          <option value="liscio">Liscio</option>
+        </select>
+      </div>
 
-      <label data-it="Tipo di imenoforo" data-en="Hymenophore type">Tipo di imenoforo</label>
-      <select id="hymenium">
-        <option value="">--</option>
-        <option value="lamelle">Lamelle</option>
-        <option value="pori">Pori</option>
-      </select>
+      <div class="field">
+        <label>Presenza di anello</label>
+        <select id="anello">
+          <option value="">--</option>
+          <option value="sì">Sì</option>
+          <option value="no">No</option>
+        </select>
+      </div>
 
-      <label data-it="Presenza di anello" data-en="Ring">Presenza di anello</label>
-      <select id="ring">
-        <option value="">--</option>
-        <option value="sì">Sì</option>
-        <option value="no">No</option>
-      </select>
+      <div class="field">
+        <label>Habitat</label>
+        <select id="habitat">
+          <option value="">--</option>
+          <option value="bosco">Bosco</option>
+          <option value="prato">Prato</option>
+          <option value="tronchi">Tronchi</option>
+          <option value="radure">Radure</option>
+        </select>
+      </div>
 
-      <label data-it="Habitat" data-en="Habitat">Habitat</label>
-      <select id="habitat">
-        <option value="">--</option>
-        <option value="bosco">Bosco</option>
-        <option value="prato">Prato</option>
-        <option value="tronco">Su tronco</option>
-      </select>
+      <button type="submit" class="search-btn">🔍 Cerca</button>
+    </form>
 
-      <button onclick="searchMushrooms()">🔍 <span data-it="Cerca" data-en="Search">Cerca</span></button>
-    </div>
-
-    <div class="spinner" id="spinner"></div>
-
+    <div id="loader" class="loader hidden"></div>
     <div id="results" class="results"></div>
-  </main>
+  </div>
 
   <script src="script.js"></script>
 </body>

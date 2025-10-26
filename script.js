@@ -1,89 +1,54 @@
-// Ricerca principale MycoWeb
 async function searchMushrooms() {
-  const colorCap = document.getElementById("coloreCappello").value.toLowerCase();
-  const shapeCap = document.getElementById("formaCappello").value.toLowerCase();
-  const typeGills = document.getElementById("tipoLamelle").value.toLowerCase();
-  const colorGills = document.getElementById("coloreLamelle").value.toLowerCase();
-  const shapeStipe = document.getElementById("formaGambo").value.toLowerCase();
-  const smell = document.getElementById("odore").value.toLowerCase();
-  const habitat = document.getElementById("habitat").value.toLowerCase();
+  const spinner = document.getElementById("spinner");
   const resultsDiv = document.getElementById("results");
+  spinner.style.display = "block";
   resultsDiv.innerHTML = "";
 
-  // Mostra funghetto rotante
-  const spinner = document.createElement("div");
-  spinner.classList.add("spinner");
-  resultsDiv.appendChild(spinner);
+  const capColor = document.getElementById("capColor").value.toLowerCase();
+  const hymenium = document.getElementById("hymenium").value.toLowerCase();
+  const ring = document.getElementById("ring").value.toLowerCase();
+  const habitat = document.getElementById("habitat").value.toLowerCase();
 
   try {
     const response = await fetch("funghi.json");
     const data = await response.json();
-    const results = [];
 
-    // Ricerca fuzzy: calcolo punteggio
-    for (const f of data) {
-      let score = 0;
-      if (colorCap && f.coloreCappello.toLowerCase().includes(colorCap)) score++;
-      if (shapeCap && f.formaCappello.toLowerCase().includes(shapeCap)) score++;
-      if (typeGills && f.tipoLamelle.toLowerCase().includes(typeGills)) score++;
-      if (colorGills && f.coloreLamelle.toLowerCase().includes(colorGills)) score++;
-      if (shapeStipe && f.formaGambo.toLowerCase().includes(shapeStipe)) score++;
-      if (smell && f.odore.toLowerCase().includes(smell)) score++;
-      if (habitat && f.habitat.toLowerCase().includes(habitat)) score++;
-      if (score > 0) results.push({ ...f, score });
+    const filtered = data.filter(f => {
+      return (!capColor || f.colore_cappello.includes(capColor)) &&
+             (!hymenium || f.imenoforo.includes(hymenium)) &&
+             (!ring || f.anello.includes(ring)) &&
+             (!habitat || f.habitat.includes(habitat));
+    });
+
+    spinner.style.display = "none";
+
+    if (filtered.length === 0) {
+      resultsDiv.innerHTML = `<p>Nessun fungo trovato nel database locale. Cerco online...</p>`;
+      const query = [capColor, hymenium, ring, habitat].filter(Boolean).join(" ");
+      const wiki = `https://it.wikipedia.org/wiki/${query}`;
+      const mushExp = `https://www.mushroomexpert.com/${query.replace(" ", "_")}.html`;
+      resultsDiv.innerHTML += `<p><a href="${wiki}" target="_blank">Wikipedia</a> | <a href="${mushExp}" target="_blank">MushroomExpert</a></p>`;
+      return;
     }
 
-    results.sort((a, b) => b.score - a.score);
-    resultsDiv.innerHTML = "";
-
-    if (results.length > 0) {
-      results.forEach(f => {
-        const div = document.createElement("div");
-        div.classList.add("result-card");
-        div.innerHTML = `
-          <h3>${f.nomeItaliano}</h3>
-          <p><em>${f.nomeLatino}</em> (${f.nomeInglese})</p>
-          <img src="${f.immagine}" alt="${f.nomeItaliano}" class="thumb">
-          <p><strong>Habitat:</strong> ${f.habitat}</p>
-          <p><strong>Comestibilità:</strong> ${f.commestibile}</p>
-          <a href="${f.link}" target="_blank">📘 Scheda su Wikipedia</a>
-        `;
-        resultsDiv.appendChild(div);
-      });
-    } else {
-      resultsDiv.innerHTML = "<p>Nessun fungo trovato nel database locale. Cerco online...</p>";
-      const query = encodeURIComponent(`${colorCap} ${shapeCap} ${typeGills} ${habitat} mushroom`);
-      const wikiLink = `https://en.wikipedia.org/wiki/Special:Search?search=${query}`;
-      const expertLink = `https://www.mushroomexpert.com/cgi-bin/search.pl?search=${query}`;
-      resultsDiv.innerHTML += `
-        <a href="${wikiLink}" target="_blank">🔍 Cerca su Wikipedia</a><br>
-        <a href="${expertLink}" target="_blank">🔍 Cerca su MushroomExpert</a>
-      `;
-    }
-
-  } catch (error) {
-    resultsDiv.innerHTML = "<p>Errore nel caricamento del database.</p>";
-    console.error(error);
+    resultsDiv.innerHTML = filtered.map(f => `
+      <div class="result-item">
+        <h3>${f.nome_latino} (${f.nome_italiano})</h3>
+        <img src="${f.immagine}" alt="${f.nome_italiano}" width="100">
+        <p><strong>Colore cappello:</strong> ${f.colore_cappello}</p>
+        <p><strong>Imenoforo:</strong> ${f.imenoforo}</p>
+        <p><strong>Habitat:</strong> ${f.habitat}</p>
+      </div>
+    `).join("");
+  } catch (err) {
+    spinner.style.display = "none";
+    resultsDiv.innerHTML = `<p>Errore nel caricamento del database.</p>`;
   }
 }
 
-// Gestione cambio lingua (semplice)
-function changeLanguage(lang) {
-  document.documentElement.lang = lang;
-  const labels = {
-    it: {
-      search: "Cerca Funghi",
-      results: "Risultati della Ricerca"
-    },
-    en: {
-      search: "Search Mushrooms",
-      results: "Search Results"
-    },
-    la: {
-      search: "Quaerere Fungos",
-      results: "Eventus Quaerendi"
-    }
-  };
-  document.getElementById("searchTitle").textContent = labels[lang].search;
-  document.getElementById("resultsTitle").textContent = labels[lang].results;
+function changeLanguage() {
+  const lang = document.getElementById("language").value;
+  document.querySelectorAll("[data-it]").forEach(el => {
+    el.innerText = el.getAttribute(`data-${lang}`);
+  });
 }

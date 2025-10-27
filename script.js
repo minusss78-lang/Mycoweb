@@ -76,7 +76,7 @@ async function wikiThumb(title){
 const mushroomExpertSearch = q => `https://www.mushroomexpert.com/search?q=${encodeURIComponent(q)}`;
 
 // funzione principale: scoring + ricerca rilassata + fallback online
-async function performSearch(rawFilters) {
+async function ר(rawFilters) {
   // mostra loader
   if (loaderWrap) loaderWrap.classList.remove('hidden');
   if (loaderText) loaderText.textContent = 'Ricerca in corso...';
@@ -153,7 +153,78 @@ async function performSearch(rawFilters) {
   return [];
 }
 
-// funzione wrapper attivata da bottone
+// funzione principale: scoring + ricerca rilassata + tolleranza reale
+async function performSearch(rawFilters) {
+  if (loaderWrap) loaderWrap.classList.remove('hidden');
+  if (loaderText) loaderText.textContent = 'Ricerca in corso...';
+
+  const db = await loadLocalDB();
+
+  const filters = {};
+  Object.keys(FIELD_MAP).forEach(k => {
+    filters[k] = s(rawFilters[k] || '');
+  });
+
+  const scored = [];
+
+  for (const rec of db) {
+    let score = 0;
+    let totalWeight = 0;
+
+    Object.keys(FIELD_MAP).forEach(k => {
+      const val = filters[k];
+      const weight = FIELD_MAP[k].weight;
+      if (!val) return; // filtro non usato
+
+      const candidate = s(getFirstValue(rec, FIELD_MAP[k].jsonPath));
+
+      if (!candidate) {
+        // campo mancante → non penalizzare, ma considera comunque parzialmente
+        totalWeight += weight; 
+        score += weight * 0.5; // assegna mezzo punteggio per campo mancante
+        return;
+      }
+
+      totalWeight += weight;
+
+      if (candidate.includes(val)) {
+        score += weight; // match pieno
+      } else {
+        const candidateParts = candidate.split(/[\s,\/-]+/);
+        if (candidateParts.some(p => p.includes(val) || val.includes(p))) {
+          score += weight * 0.5; // match parziale
+        }
+      }
+    });
+
+    // calcolo percentuale (0-1)
+    const ratio = totalWeight > 0 ? score / totalWeight : 0;
+    if (ratio > 0) scored.push({ rec, score: ratio });
+  }
+
+  if (scored.length > 0) {
+    scored.sort((a, b) => b.score - a.score);
+    if (loaderWrap) loaderWrap.classList.add('hidden');
+    return scored.map(x => x.rec).slice(0, 200);
+  }
+
+  // fallback: ricerca rilassata (qualunque parola)
+  const anyFilterWords = [];
+  Object.values(filters).forEach(v => { if (v) anyFilterWords.push(...v.split(/\s+/)); });
+
+  const relaxed = db.filter(rec => {
+    if (anyFilterWords.length === 0) return false;
+    let hay = '';
+    hay += ' ' + s(getFirstValue(rec, ['nome_italiano','nome_inglese','nome_latino']));
+    Object.keys(FIELD_MAP).forEach(k => {
+      hay += ' ' + s(getFirstValue(rec, FIELD_MAP[k].jsonPath));
+    });
+    return anyFilterWords.some(w => w && hay.includes(w));
+  });
+
+  if (loaderWrap) loaderWrap.classList.add('hidden');
+  return relaxed.slice(0, 200);
+                                 }// funzione wrapper attivata da bottone
 async function runSearchFromUI() {
   // prendi valori UI: gli ID devono corrispondere a quelli nel tuo index.html
   const raw = {
